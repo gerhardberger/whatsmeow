@@ -78,6 +78,8 @@ func main() {
 		return
 	}
 
+	handleWSEndpoint()
+
 	cli = whatsmeow.NewClient(device, waLog.Stdout("Client", logLevel, true))
 	var isWaitingForPair atomic.Bool
 	cli.PrePairCallback = func(jid types.JID, platform, businessName string) bool {
@@ -1162,4 +1164,6 @@ func handler(rawEvt interface{}) {
 	case *events.Blocklist:
 		log.Infof("Blocklist event: %+v", evt)
 	}
+
+	handleCallEvent(rawEvt)
 }
