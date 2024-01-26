@@ -50,6 +50,11 @@ func (cli *Client) handleCallEvent(node *waBinary.Node) {
 			BasicCallMeta: basicMeta,
 			Data:          &child,
 		})
+	case "video":
+		cli.dispatchEvent(&events.CallVideo{
+			BasicCallMeta: basicMeta,
+			Data:          &child,
+		})
 	case "accept":
 		cli.dispatchEvent(&events.CallAccept{
 			BasicCallMeta: basicMeta,

@@ -87,6 +87,8 @@ func handleCallEvent(rawEvt interface{}) {
 		sendCallEventOnWSConnection(evt.Data, evt.BasicCallMeta.From, evt.BasicCallMeta)
 	case *events.CallRelayLatency:
 		sendCallEventOnWSConnection(evt.Data, evt.BasicCallMeta.From, evt.BasicCallMeta)
+	case *events.CallVideo:
+		sendCallEventOnWSConnection(evt.Data, evt.BasicCallMeta.From, evt.BasicCallMeta)
 	case *events.CallPreAccept:
 		sendCallEventOnWSConnection(evt.Data, evt.BasicCallMeta.From, evt.BasicCallMeta)
 	case *events.CallAccept:
@@ -170,8 +172,7 @@ func convertJSONToNode(jsonNode interface{}, to types.JID, messageID types.Messa
 	_, ok = content[0].(XMLJSONNode)
 	if ok {
 		tag := casted[0].(string)
-		newNodesLength := len(content)
-		newNodes := make([]waBinary.Node, newNodesLength)
+		newNodes := make([]waBinary.Node, 0)
 
 		if (tag == "to") {
 			// Override recipient JID for separate devices for encrypting callKey.
@@ -182,9 +183,9 @@ func convertJSONToNode(jsonNode interface{}, to types.JID, messageID types.Messa
 
 		isPreKey := false
 
-		for i, node := range content {
+		for _, node := range content {
 			res, isPreKeyTemp := convertJSONToNode(node, to, messageID)
-			newNodes[i] = res
+			newNodes = append(newNodes, res)
 			isPreKey = isPreKey || isPreKeyTemp
 		}
 

@@ -58,6 +58,12 @@ type CallRelayLatency struct {
 	Data *waBinary.Node
 }
 
+// CallVideo is emitted slightly after the user receives a call on WhatsApp.
+type CallVideo struct {
+	types.BasicCallMeta
+	Data *waBinary.Node
+}
+
 // CallTerminate is emitted when the other party terminates a call on WhatsApp.
 type CallTerminate struct {
 	types.BasicCallMeta
